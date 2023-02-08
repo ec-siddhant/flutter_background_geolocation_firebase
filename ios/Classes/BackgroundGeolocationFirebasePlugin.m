@@ -109,7 +109,7 @@ static NSString *const DEFAULT_GEOFENCES_COLLECTION = @"geofences";
 
 - (BOOL)checkIfUserIsSubscribed {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *userSubEndDate = [defaults stringForKey:@"user_sub_end_date"];
+    NSString *userSubEndDate = [defaults stringForKey:@"flutter.user_sub_end_date"];
 
     if (userSubEndDate != nil) {
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];

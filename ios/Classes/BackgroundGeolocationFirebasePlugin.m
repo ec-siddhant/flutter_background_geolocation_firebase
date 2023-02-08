@@ -94,6 +94,7 @@ static NSString *const DEFAULT_GEOFENCES_COLLECTION = @"geofences";
                 }
             }];
         } else {
+            if ([self checkIfUserIsSubscribed]) {
             [[db documentWithPath:collectionName] setData:notification.object completion:^(NSError * _Nullable error) {
                 if (error != nil) {
                     NSLog(@"Error writing document: %@", error);
@@ -101,9 +102,33 @@ static NSString *const DEFAULT_GEOFENCES_COLLECTION = @"geofences";
                     NSLog(@"Document successfully written");
                 }
             }];
+            }
         }
     });
 }
+
+- (BOOL)checkIfUserIsSubscribed {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *userSubEndDate = [defaults stringForKey:@"user_sub_end_date"];
+
+    if (userSubEndDate != nil) {
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSSSSS"];
+        NSDate *dateEnd = [dateFormat dateFromString:userSubEndDate];
+        NSDate *currDate = [NSDate date]; // get the device's current date and time
+
+        if (dateEnd != nil && currDate != nil) {
+            if ([dateEnd compare:currDate] == NSOrderedDescending) {
+                return YES;
+            } else {
+                NSLog(@"Cannot update - User is not subscribed");
+                return NO;
+            }
+        }
+    }
+    return NO;
+}
+
 
 -(void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

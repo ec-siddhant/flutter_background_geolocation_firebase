@@ -99,7 +99,7 @@ static NSString *const DEFAULT_GEOFENCES_COLLECTION = @"geofences";
                     if (error != nil) {
                         NSLog(@"Error writing document: %@", error);
                     } else {
-                        NSLog(@"Document successfully written");
+                        NSLog(@"Document successfully written with Merge");
                     }
                 }];
 

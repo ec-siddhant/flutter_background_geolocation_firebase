@@ -95,13 +95,14 @@ static NSString *const DEFAULT_GEOFENCES_COLLECTION = @"geofences";
             }];
         } else {
             if ([self checkIfUserIsSubscribed]) {
-            [[db documentWithPath:collectionName] setData:notification.object completion:^(NSError * _Nullable error) {
-                if (error != nil) {
-                    NSLog(@"Error writing document: %@", error);
-                } else {
-                    NSLog(@"Document successfully written");
-                }
-            }];
+                [[db documentWithPath:collectionName] setData:notification.object merge:YES completion:^(NSError * _Nullable error) {
+                    if (error != nil) {
+                        NSLog(@"Error writing document: %@", error);
+                    } else {
+                        NSLog(@"Document successfully written");
+                    }
+                }];
+
             }
         }
     });
